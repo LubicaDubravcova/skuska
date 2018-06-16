@@ -24,6 +24,9 @@ public class SKcv2U4 {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         String line;
+        String nazov,autor,pocet;
+        Kniha k;
+        
         BufferedReader br = new BufferedReader(new FileReader("/Users/Dell/Documents/NetBeansProjects/SKcv2U4/data1.csv"));
         while ((line = br.readLine()) != null) {
 
@@ -32,25 +35,30 @@ public class SKcv2U4 {
                 System.out.println("kratky riadok");
                 return;
             }
-            String nazov = s[0].trim();
-            String autor = s[1].trim();
-            String pocet = s[2].trim();
             
-            if(pocet==null)
-                pocet="0";
-           
+            nazov = s[0].trim();
+            autor = s[1].trim();
+            pocet = s[2].trim();
+            System.out.println(pocet);
+            
+            
             
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("SKcv2U4PU");
             EntityManager em = emf.createEntityManager();
             if(nazov!=null ){
-                Kniha k=new Kniha(nazov,autor);
-                //Kniha k=new Kniha(nazov,autor,Integer.parseInt(pocet));
-                if(k.equals(k)==false){
+               
+                
+                if(pocet=="") //nevojde sem
+                    k=new Kniha(nazov,autor);
+                else
+                    k=new Kniha(nazov,autor,Integer.parseInt(pocet));   
+                //este dulicity{
                     em.getTransaction().begin();
                     em.persist(k);
                     em.getTransaction().commit();
-                }
+                //}
             }
+           
         }
     
 }
