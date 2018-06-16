@@ -28,8 +28,9 @@ public class SKcv2U4 {
         Kniha k;
         
         BufferedReader br = new BufferedReader(new FileReader("/Users/Dell/Documents/NetBeansProjects/SKcv2U4/data1.csv"));
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SKcv2U4PU");
+        EntityManager em = emf.createEntityManager();
         while ((line = br.readLine()) != null) {
-
             String s[] = line.split(";");
             if (s.length < 3) {
                 System.out.println("kratky riadok");
@@ -39,19 +40,12 @@ public class SKcv2U4 {
             nazov = s[0].trim();
             autor = s[1].trim();
             pocet = s[2].trim();
-            System.out.println(pocet);
+            if(pocet.isEmpty())       
+                pocet= "0";
             
             
-            
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SKcv2U4PU");
-            EntityManager em = emf.createEntityManager();
             if(nazov!=null ){
-               
-                
-                if(pocet=="") //nevojde sem
-                    k=new Kniha(nazov,autor);
-                else
-                    k=new Kniha(nazov,autor,Integer.parseInt(pocet));   
+                k=new Kniha(nazov,autor,Integer.parseInt(pocet));   
                 //este dulicity{
                     em.getTransaction().begin();
                     em.persist(k);
