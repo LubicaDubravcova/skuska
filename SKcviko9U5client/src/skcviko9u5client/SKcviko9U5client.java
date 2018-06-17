@@ -16,6 +16,7 @@ public class SKcviko9U5client {
      */
     public static void main(String[] args) {
         NewJerseyClient c = new NewJerseyClient();
+        System.out.println(c.getPocet("Pon"));
         System.out.println(c.getJedlo("Pon", "3"));
         //c.deleteJedlo("Pon", "1");
         //c.postJedlo("Kuracia polievka", "Pon");
