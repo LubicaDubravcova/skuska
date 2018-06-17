@@ -63,9 +63,10 @@ public class GenericResource {
     @GET
     @Path("{den}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Integer getPocet(@PathParam("den") String key) {
+    public String getPocet(@PathParam("den") String key) {
         HashMap<Integer,String> jedla=menu.get(key);
-        return jedla.size();
+        Integer pocet= jedla.size();
+        return pocet.toString();
     }
 
     /**
