@@ -42,10 +42,10 @@ public class NewJerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
     }
 
-    public <T> T getPocet(Class<T> responseType, String den) throws ClientErrorException {
+    public String getPocet(String den) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{den}));
-        return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
     }
 
     public void postJedlo(Object requestEntity, String den) throws ClientErrorException {
