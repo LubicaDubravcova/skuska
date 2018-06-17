@@ -5,13 +5,12 @@
  */
 package proxy;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import javax.ejb.Singleton;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,24 +30,23 @@ public class GenericResource {
 
     @Context
     private UriInfo context;
-    private List<String> pon,ut,st,stv,pia;
-    private HashMap<String,List<String>> menu;
+    private HashMap<Integer,String> pon,ut,st,stv,pia;
+    private HashMap<String,HashMap<Integer,String>> menu;
 
-    /**
-     * Creates a new instance of GenericResource
-     */
+    
+   
     public GenericResource() {
-        pon=new ArrayList<>();
-        pon.add("Kuracia polievka");
-        pon.add("Rezen");
+        pon=new HashMap<>();
+        pon.put(1,"Kuracia polievka");
+        pon.put(2,"Rezen");
         
-        ut=new ArrayList<>();
-        st=new ArrayList<>();
-        stv=new ArrayList<>();
+        ut=new HashMap<>();
+        st=new HashMap<>();
+        stv=new HashMap<>();
         
-        pia=new ArrayList<>();
-        pia.add("Rajcinova polievka");
-        pia.add("Vyprazany syr");
+        pia=new HashMap<>();
+        pia.put(1,"Rajcinova polievka");
+        pia.put(2,"Vyprazany syr");
         
         menu=new HashMap<>();
         menu.put("Pon", pon);
@@ -59,14 +57,14 @@ public class GenericResource {
     }
 
     /**
-     * Retrieves representation of an instance of proxy.GenericResource
-     * @return an instance of java.lang.String
+     funguje cez web
      */
+    
     @GET
     @Path("{den}")
     @Produces(MediaType.TEXT_PLAIN)
     public Integer getPocet(@PathParam("den") String key) {
-        List<String> jedla=menu.get(key);
+        HashMap<Integer,String> jedla=menu.get(key);
         return jedla.size();
     }
 
@@ -78,29 +76,41 @@ public class GenericResource {
     @Path("{den}")
     @Consumes(MediaType.TEXT_PLAIN)
     public void postJedlo(@PathParam("den") String key,String content) {
-        List<String> jedla=menu.get(key);
-        jedla.add(content);
+        Integer index=1;
+        
+        HashMap<Integer,String> jedla=menu.get(key);
+        while(jedla.containsKey(index)){
+            index++;
+        }
+        jedla.put(index,content);
     }
-    
+    /*funguje cez web*/
     @GET
     @Path("{den}/{index}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getJedlo(@PathParam("den") String key,@PathParam("index") int index) {
-        List<String> jedla=menu.get(key);
+        HashMap<Integer,String> jedla=menu.get(key);
         return jedla.get(index);
     }
     
     @PUT
-    @Path("{den}")
+    @Path("{den}/{index}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public void putJedlo(@PathParam("den") String key,String content) {
+    public void putJedlo(@PathParam("den") String key,@PathParam("index") int index,String content) {
         
-        List<String> jedla=menu.get(key);
-        if(jedla.contains(content)){
-            int index=jedla.indexOf(content);
-            jedla.add(index, content);
+        HashMap<Integer,String> jedla=menu.get(key);
+        if(jedla.containsKey(index)){
+            jedla.put(index, content);
         }
     }
     
+    @DELETE
+    @Path("{den}/{index}")
+    public void deleteJedlo(@PathParam("den") String key,@PathParam("index") int index){
+        HashMap<Integer,String> jedla=menu.get(key);
+        if(jedla.containsKey(index)){
+            jedla.remove(index);
+        }
+    }
     
 }
