@@ -1,0 +1,31 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package skcv11u3;
+
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.SAXException;
+
+/**
+ *
+ * @author Dell
+ */
+public class SKcv11U3 {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException {
+        SAXParserFactory spf= SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        SAXParser saxParser=spf.newSAXParser();
+        saxParser.parse("receptar.xml",new Handler());
+        saxParser.parse("receptar.xml",new Handler2());
+    }
+    
+}
